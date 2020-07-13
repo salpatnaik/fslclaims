@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FSL Claims Asset</fullName>
+    <types>
+        <members>AssignClaimsPermission</members>
+        <members>WorkOrderClaimsTriggerHandler</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>WorkOrderClaimsTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+        <members>DE_Claim_Product__c.DE_Amount__c</members>
+        <members>DE_Claim_Product__c.DE_Claim__c</members>
+        <members>DE_Claim_Product__c.DE_Product_Item__c</members>
+        <members>DE_Claim_Product__c.DE_Product__c</members>
+        <members>DE_Claim_Product__c.DE_Quantity__c</members>
+        <members>DE_Claim_Product__c.DE_Status__c</members>
+        <members>DE_Claim_Product__c.DE_Total_Amount__c</members>
+        <members>DE_Claim__c.DE_Claim_Account__c</members>
+        <members>DE_Claim__c.DE_Total_Amount__c</members>
+        <members>DE_Claim__c.DE_Work_Order__c</members>
+        <members>ProductConsumed.DE_Asset_Number__c</members>
+        <members>ProductConsumed.DE_Total_Effective_Amount__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>DE_Claim_Product__c</members>
+        <members>DE_Claim__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>DE_Claim__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Claim_Record_Page</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>DE_Claim_Product__c-Claim Product Layout</members>
+        <members>DE_Claim__c-Claim Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>DE_Claim__c.All</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>Claims_Asset_Permission_Set</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>47.0</version>
+</Package>
