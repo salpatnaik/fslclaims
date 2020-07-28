@@ -12,12 +12,5 @@ public class AssignClaimsPermission {
             	permissionSetList.add(psa);
             }
             upsert permissionSetList;
-        	
-        	Product2 p = new Product2();
-            p.Name = 'Service Charge';
-            p.ProductCode = 'SC-0809';
-            p.IsActive = true;
-            p.Standard_Pricebook_Price__c = 150;
-            insert p;
     }
 }
