@@ -130,8 +130,8 @@ public class WorkOrderClaimsTriggerHandler {
         Map<Id,DE_Claim__c> claimsMap = new Map<Id,DE_Claim__c>();
         Map<Id,PricebookEntry> peMap = new Map<Id,PricebookEntry>();
         List<ProductConsumed> pcList = new List<ProductConsumed>();
-        Product2 p = [SELECT Id,Standard_Pricebook_Price__c FROM Product2 WHERE Name = 'Service Charge' LIMIT 1];
-        for(PricebookEntry pe : [SELECT Id,Pricebook2Id FROM PricebookEntry WHERE Product2Id=:p.Id]){
+        Product2 p = [SELECT Id FROM Product2 WHERE Name = 'Service Charge' LIMIT 1];
+        for(PricebookEntry pe : [SELECT Id,Pricebook2Id,UnitPrice FROM PricebookEntry WHERE Product2Id=:p.Id]){
             peMap.put(pe.Pricebook2Id,pe);
         }
         //Filter Completed Work Orders
@@ -142,12 +142,12 @@ public class WorkOrderClaimsTriggerHandler {
         }
 		Map<Id,WorkOrder> workOrderMap = new Map<Id,WorkOrder>([SELECT Id,Pricebook2Id,(SELECT Id FROM ProductsConsumed),(SELECT Id FROM Claims__r ORDER BY CreatedDate DESC LIMIT 1) FROM WorkOrder WHERE Id IN :workOrderIdSet]);
         for(WorkOrder wo : workOrderMap.values()){
-            if(wo.Claims__r.size()==0){
+            if(wo.Claims__r == null){
                 ProductConsumed pc = new ProductConsumed();
                 pc.WorkOrderId = wo.Id;
                 pc.QuantityConsumed = 1;
-                pc.UnitPrice = p.Standard_Pricebook_Price__c;
-                pc.DE_Total_Effective_Amount__c = p.Standard_Pricebook_Price__c;
+                pc.UnitPrice = peMap.get(wo.Pricebook2Id).UnitPrice;
+                pc.DE_Total_Effective_Amount__c = peMap.get(wo.Pricebook2Id).UnitPrice;
                 pc.PricebookEntryId = peMap.get(wo.Pricebook2Id).Id;
                 pcList.add(pc);
             } else {
@@ -157,17 +157,17 @@ public class WorkOrderClaimsTriggerHandler {
         if(claimsIdSet.size()>0){
             claimsMap = new Map<Id,DE_Claim__c>([SELECT Id,(SELECT Id FROM Claim_Products__r) FROM DE_Claim__c WHERE Id IN:claimsIdSet]);
             for(WorkOrder wo : workOrderMap.values()){
-                if(wo.ProductsConsumed.size()>0 && wo.ProductsConsumed.size() > claimsMap.get(wo.Claims__r[0].Id).Claim_Products__r.size() ){
+                if(wo.ProductsConsumed != null && wo.ProductsConsumed.size() > claimsMap.get(wo.Claims__r[0].Id).Claim_Products__r.size() ){
                     ProductConsumed pc = new ProductConsumed();
                     pc.WorkOrderId = wo.Id;
                     pc.QuantityConsumed = 1;
-                    pc.UnitPrice = p.Standard_Pricebook_Price__c;
-                    pc.DE_Total_Effective_Amount__c = p.Standard_Pricebook_Price__c;
+                    pc.UnitPrice = peMap.get(wo.Pricebook2Id).UnitPrice;
+                    pc.DE_Total_Effective_Amount__c = peMap.get(wo.Pricebook2Id).UnitPrice;
                     pc.PricebookEntryId = peMap.get(wo.Pricebook2Id).Id;
                     pcList.add(pc);
                 }
         	}
         }
-	Insert pcList;         
+		Insert pcList;         
     }
 }
