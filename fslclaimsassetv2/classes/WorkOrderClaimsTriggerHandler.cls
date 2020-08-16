@@ -142,7 +142,7 @@ public class WorkOrderClaimsTriggerHandler {
         }
 		Map<Id,WorkOrder> workOrderMap = new Map<Id,WorkOrder>([SELECT Id,Pricebook2Id,(SELECT Id FROM ProductsConsumed),(SELECT Id FROM Claims__r ORDER BY CreatedDate DESC LIMIT 1) FROM WorkOrder WHERE Id IN :workOrderIdSet]);
         for(WorkOrder wo : workOrderMap.values()){
-            if(wo.Claims__r == null){
+            if(wo.Claims__r == null || wo.Claims__r.size()==0){
                 ProductConsumed pc = new ProductConsumed();
                 pc.WorkOrderId = wo.Id;
                 pc.QuantityConsumed = 1;
